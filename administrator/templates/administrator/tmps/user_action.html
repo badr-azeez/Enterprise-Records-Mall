@@ -1,0 +1,47 @@
+<!-- Modal delete -->
+<div
+  class="modal fade"
+  id="delete{{record.pk}}"
+  tabindex="-1"
+  aria-labelledby="delete{{record.pk}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content bg-danger">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete{{record.pk}}">delete</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        name : {{record.first_name}} <br>
+        <b class="text-warning" >When the user is deleted, all records entered by the user will be deleted.</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          close
+        </button>
+        <form action="{% url 'administrator:users-delete' record.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-warning">
+            delete &nbsp; <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if record.username != 'admin' %}
+ <a class="btn btn-warning fa fa-edit"  href="{% url 'administrator:user-edit' record.pk %}"></a>
+ <button type="button" class="btn btn-danger fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete{{record.pk}}" {% if record.username == 'admin' %} disabled {%endif%} >
+</button>
+{% else %}
+<i class="fa-solid fa-xmark fa-lg" style="color:  #ea538f;"></i>
+{%endif%} 
+
+

@@ -1,0 +1,45 @@
+<!-- Modal delete -->
+<div
+  class="modal fade"
+  id="delete{{record.pk}}"
+  tabindex="-1"
+  aria-labelledby="delete{{record.pk}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content bg-danger">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete{{record.pk}}">delete</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        are you sure to delete : {{record.name}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          close
+        </button>
+        <form action="{% url 'users:record/delete' record.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-warning">
+            delete &nbsp; <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<a class="btn btn-secondary fa fa-eye" href="{% url 'users:record/show' record.pk %}"></a>
+
+{% if request.user.is_superuser  or record.is_validate == False  and request.user == record.user %}
+<a class="btn btn-warning fa fa-edit" href="{% url 'users:record/edit' record.pk %}"></a>
+<button type="button" class="btn btn-danger fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete{{record.pk}}">
+</button>
+{% endif %}

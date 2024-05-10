@@ -1,0 +1,87 @@
+<!-- Modal delete -->
+<div
+  class="modal fade"
+  id="delete{{record.pk}}"
+  tabindex="-1"
+  aria-labelledby="delete{{record.pk}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content bg-danger">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete{{record.pk}}">delete</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        are you sure to delete : {{record.name}} <br>
+        <b class="text-warning" >
+          All Division accounts and records will be deleted.
+        </b>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Close
+        </button>
+        <form action="{% url 'administrator:departments/delete' record.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-warning">
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal edit -->
+<div
+  class="modal fade"
+  id="edit{{record.pk}}"
+  tabindex="-1"
+  aria-labelledby="edit{{record.pk}}"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="edit{{record.pk}}">Edit</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="{% url 'administrator:departments_edit' record.pk %}" class="row g-3 needs-validation" novalidate method="POST">
+            {% csrf_token %}
+        <div class="modal-body text-start">
+            <label class="form-label text-start fs-5">Department Name</label>
+            <input type="text" name="name"  maxlength="100" value="{{record.name}}"  class="form-control bg-dark text-white" required>
+            <div class="invalid-tooltip"> 
+               Field is required
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-info">Save
+            </button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-warning fa fa-edit" data-bs-toggle="modal" data-bs-target="#edit{{record.pk}}">
+</button>
+
+<button type="button" class="btn btn-danger fa fa-trash" data-bs-toggle="modal" data-bs-target="#delete{{record.pk}}">
+</button>
+

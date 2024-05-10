@@ -1,0 +1,201 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Control Panel{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center my-5 text-capitalize ">
+    <h2>( {{department}} )</h2>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-xl-3 mb-4">
+        <div class="card bg-primary text-white border border-1 h-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 mt-2">
+                        <h5>Records Year ({{year}}) <br></h5>
+                        <h2>{{total_departments_year_sum}}</h2>
+                    </div>
+                    <div class="col-2">
+                        <i class="fa-solid fa-chart-line fa-5x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-xl-3 mb-4">
+        <div class="card bg-dark text-white border border-1 h-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 mt-2">
+                        <h5>Month Records ({{month}}) <br></h5>
+                        <h2>{{total_departments_month_sum}}</h2>
+                    </div>
+                    <div class="col-2">
+                        <i class="fa-solid fa-calendar fa-5x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-xl-3 mb-4">
+        <div class="card bg-success text-white border border-1 h-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 mt-2">
+                        <h5>Records Last 7 Days <br></h5>
+                        <h2>{{total_departments_7days_sum}}</h2>
+                    </div>
+                    <div class="col-2">
+                        <i class="fa-solid fa-calendar-days fa-5x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-xl-3 mb-4">
+        <div class="card bg-warning text-black h-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 mt-2">
+                        <h5>Records Under Verification<br></h5>
+                        <h2>{{records_not_validate_yet}}</h2>
+                    </div>
+                    <div class="col-2">
+                        <i class="fa-solid fa-list fa-5x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="background-color: #2b4653bd;" class="card border border-1 my-5 ">
+    <div class="card-header">
+        <h5 class="text-white" >
+            Monthly Record - For The Month ({{month}})
+        </h5>
+    </div>
+
+    <div class="card-body">
+       <div class="row d-flex align-items-center justify-content-center text-white">
+            {% if uploadFile.is_validate == True %}
+                <div class="col-md-1">
+                    <i class="fa-sharp fa-solid fa-check fa-5x" style="color: #54B4D3;"></i>
+                </div>
+                <div class="col">
+                    <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">
+                                    Subject:
+                                    <span class="text-white text-white-50">
+                                    {{uploadFile.title|slice:":55"}}
+                                    </span>
+                                </h5>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-white" >
+                                    Creation Date:&nbsp;
+                                    <span class="text-white-50" >
+                                        {{uploadFile.date_creation|date:'Y-m-d  h:i A'}}
+                                    </span>
+                                </h5>
+                            </div>
+                    </div>
+                    
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="text-white">
+                                    Notes:
+                                    <span class="text-white-50" >
+                                        {% if uploadFile.note|length > 35 %}
+                                            {{uploadFile.note|slice:":35"}}....
+        
+                                        {% elif uploadFile.note|length < 35 %}
+                                            {{uploadFile.note|slice:":35"}}
+                                        {% else %}
+                                        None
+                                        {% endif %}
+                                    </span>
+                                </h5>
+                            </div>
+                            <div class="col">
+                                <h5 class="card-title">
+                                    Status:
+                                    <span class="text-info">
+                                        Verified
+                                    </span>
+                                </h5>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            {% elif uploadFile.is_validate == False %}
+                <div class="col-md-1">
+                    <i class="fa-solid fa-hourglass fa-5x text-wait"></i>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">
+                                subject:
+                                <span class="text-white text-white-50">
+                                {{uploadFile.title|slice:":55"}}
+                                </span>
+                            </h5>
+                        </div>
+                        <div class="col">
+                            <h5 class="text-white" >
+                                Creation Date:&nbsp;
+                                <span class="text-white-50" >
+                                    {{uploadFile.date_creation|date:'Y-m-d  h:i A'}}
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="text-white">
+                                    Notes:
+                                    <span class="text-white-50" >
+                                        {% if uploadFile.note|length > 35 %}
+                                            {{uploadFile.note|slice:":35"}}....
+        
+                                        {% elif uploadFile.note|length < 35 %}
+                                            {{uploadFile.note|slice:":35"}}
+                                        {% else %}
+                                        None
+                                        {% endif %}
+                                    </span>
+                                </h5>
+                            </div>
+                            <div class="col">
+                                <h5 class="card-title">
+                                    Status:
+                                    <span class="text-wait">
+                                        Under verification
+                                    </span>
+                                </h5>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            {% else %}
+                <div class="col-md-1">
+                    <i class="fa-sharp fa-solid fa-xmark fa-fade fa-5x" style="color: #c51642;"></i>
+                </div>
+                <div class="col">
+                    <h2 class="card-title"> None</h2>
+                </div>
+                {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,132 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{%block css%}
+<style>
+  label{
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+</style>
+{%endblock%}
+{% block title %}View Uploaded File {% endblock %}
+
+{% block content %}
+<div class="text-center my-2">
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Department</th>
+        <th scope="col">Account Owner</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Last Modified Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">{{department_name}}</th>
+        <td>{{added_name.first_name}}</td>
+        <td>{{date_creation|date:'Y-m-d  h:i A'}}</td>
+        <td>{{last_modified|date:'Y-m-d  h:i A'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row my-4">
+  <div class="col">
+      {% if form.is_validate.value %}
+      <div class="">
+        <label class="check-label" > Record verified</label> &nbsp;
+        <i class="fa-solid fa-check fa-xl" style="color: #63E6BE;"></i>
+      </div>
+      {% else %}
+      <div class="">
+        <label class="check-label" > Record not verified </label> &nbsp;
+        <i class="fa-solid fa-xmark fa-xl" style="color:  #ea538f;"></i>
+      </div>
+      {% endif %}
+  </div>
+</div>
+<div class="row my-5">
+      <div class="col-md-3">
+        <label for="field1">{{form.date.label}}:</label>
+        <input disabled type="text" id="dateInput" name="{{ form.date.name }}" value='{{ form.date.value|date:"Y-m-d" }}'   class="form-control bg-white text-black" required placeholder="date" required>
+      </div>
+      <div class="col-md-6">
+        <label for="field1">{{form.title.label}}:</label>
+        <input disabled type="text" name="{{ form.title.name }}" value="{{form.title.value}}" class="form-control bg-dark text-white mb-2" maxlength="255"  required>
+      </div> 
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <label for="note">{{form.note.label}}</label>
+    <textarea disabled name="{{form.note.name}}" class="form-control bg-dark text-white" id="{{form.note.name}}" rows="5">{{form.note.value}}</textarea>
+  </div>
+
+  <div class="col-md-6">
+    {% if form.file.value %}
+    <a target="_blank" class="btn btn-info mt-4" href="/media/{{form.file.value}}">Download file</a>
+  {% else %}
+    <h4>No file uploaded</h4>
+  {% endif %}
+
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+(() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
+  const radioButtons = document.querySelectorAll('input[type="radio"][name="checkFile"]');
+  const formFile = document.getElementById('formFile'); 
+
+    if (formFile !== null) {
+      formFile.disabled = true;
+    }
+
+  radioButtons.forEach(radioButton => {
+    radioButton.addEventListener('click', () => {
+      if (radioButton.value !== 'uploadfile') {
+          if (formFile !== null) {
+            formFile.disabled = true;
+          }
+      } else {
+        formFile.disabled = false;
+      }
+    });
+  });
+  
+
+flatpickr.localize(flatpickr.l10ns.ar);
+flatpickr("#dateInput", {
+  allowInput: true,
+});
+
+
+
+</script>
+
+{% endblock %}

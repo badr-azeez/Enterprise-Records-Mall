@@ -1,0 +1,104 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Download records{% endblock %}
+
+{% block css %}
+<style>
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1); /* IE */
+  -moz-transform: scale(1); /* FF */
+  -webkit-transform: scale(1); /* Safari and Chrome */
+  -o-transform: scale(1); /* Opera */
+  padding: 10px;
+  margin-left:10px;
+}
+</style>
+{% endblock%}
+
+{% block content %}
+<div class="text-center text-capitalize">
+    <h2>Download records by specific date </h2>
+</div>
+
+<hr>
+<form class="g-3 needs-validation my-4 text-capitalize" novalidate action=""  enctype="multipart/form-data" autocomplete="off"  method="POST">
+    {% csrf_token %}
+
+        <div class="mx-auto w-25">
+            <div class="my-5 text-center">
+                <h4 for="field1">From the date</h4>
+                <input type="date" id="dateInput" name="date_from" class="form-control bg-white text-black" required>
+            </div>
+        
+            <div class="my-5 text-center">
+                <h4 for="field1">To date</h4>
+                <input type="date" id="dateInput" name="date_to" class="form-control bg-white text-black" required>  
+            </div>
+            
+
+            <div class="">
+                <h5 class="text-info">Select the download method</h5 class="text-info">
+                    <hr>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="download_method" value="download_user_department" id="download_user_department" checked>
+                    <label class="form-check-label" for="download_user_department">
+                       Department Name | Owner Account | Fields
+                    </label>
+                  </div>
+          
+                <div class="form-check my-3">
+                    <input class="form-check-input" type="radio" name="download_method" value="download_total_departments" id="download_total_departments">
+                    <label class="form-check-label" for="download_total_departments">
+                       Department Name | Fields (total) 
+                    </label>
+                </div>
+
+                <div class="form-check my-3">
+                    <input class="form-check-input" type="radio" name="download_method" value="download_total_records" id="download_total_records">
+                    <label class="form-check-label" for="download_total_records">
+                      Total fields
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success">download</button>
+        </div>
+</form>
+{% endblock %}
+
+{% block js %}
+
+<script>
+(() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
+flatpickr.localize(flatpickr.l10ns.ar);
+flatpickr("#dateInput", {
+  minDate: "2024-01",
+  allowInput: true,
+});
+
+</script>
+
+{% endblock %}

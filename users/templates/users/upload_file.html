@@ -1,0 +1,110 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{%block css%}
+<style>
+  label{
+    font-size: 16px;
+    font-weight: bold;
+  }
+</style>
+{%endblock%}
+{% block title %} Upload File{% endblock %}
+
+{% block content %}
+<div class="text-center my-2">
+  <h2 class="text-success my-2">( {{user_info.department.name}} )</h2>
+</div>
+<form class="row g-3 needs-validation my-2" novalidate action=""  enctype="multipart/form-data" autocomplete="off" method="POST">
+        {% csrf_token %}
+    <div class="row">
+          <div class="col-md-3">
+              <label for="field1">{{form.date.label}}:</label>
+              <input type="date" id="dateInput" name="{{ form.date.name }}" class="form-control bg-white text-black" required placeholder="date" required>
+          </div>
+          <div class="col-md-6">
+            <label for="field1">{{form.title.label}}:</label>
+            <input type="text" name="{{ form.title.name }}" value="{{form.title.value}}" class="form-control bg-dark text-white mb-2" maxlength="255"  required>
+          </div> 
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="note">{{form.note.label}}</label>
+        <textarea name="{{form.note.name}}" class="form-control bg-dark text-white" id="{{form.note.name}}" rows="5">{{form.note.value}}</textarea>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-5">
+          <label for="formFile">{{form.file.label}}</label> <br>
+          <input
+            name="{{form.file.name}}"
+            style="border: 1px solid white;"
+            class="form-control-file custom-file-input bg-dark text-white"
+            type="file"
+            onchange="checkFileSize()" 
+            id="fileInput"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title=".pdf,.zip,.rar"
+            accept=".pdf,.zip,.rar" 
+          >
+          <br>
+          <label class="text-info" for="formFile">Acceptable file formats zip , rar , pdf</label>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="text-center my-4">
+      <button type="submit" class="btn btn-success">Add</button>
+   </div>
+</form>
+
+{% load django_tables2 %}
+
+{% if table.rows %}
+
+  {% render_table table %}
+
+{% else %}
+<div class="text-center my-4" >
+  <h2 class="text-warning"> There are no Upload </h2>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block js %}
+
+<script>
+flatpickr.localize(flatpickr.l10ns.ar);
+flatpickr("#dateInput", {
+  minDate: "2024-01",
+  allowInput: true,
+});
+
+  
+(() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
+
+</script>
+
+{% endblock %}

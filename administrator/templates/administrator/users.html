@@ -1,0 +1,89 @@
+{% extends "home/base.html" %}
+{% block title %} Users Management {%endblock%}
+
+
+{% block content %}
+
+{% load django_tables2 %}
+
+<div class="mx-auto">
+  <div class="text-center" >
+      <h1>Users Management </h1>
+  </div>
+  <hr>
+  <a class="btn btn-secondary mb-3" href="{% url 'administrator:users/add' %}">Add User</a>
+<div class="row my-4">
+  <form method="get">
+    <div class="row">
+      <div class="col-md-3">
+        <label for="first_name">{{ filter.form.first_name.label }}:</label>
+        {{ filter.form.first_name }}
+      </div>
+      <div class="col-md-3 text-capitalize">
+        <label for="department">Department:</label>
+        <select class="form-control bg-info text-dark custom-height" name="department">
+          <option value="">----------</option>
+          {% for department in departments %}
+          {% if department.id|stringformat:"s" == request.GET.department %}
+              <option selected="selected" value="{{department.id}}">{{department.name}}</option>          
+            {% else %}
+              <option value="{{department.id}}">{{department.name}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="is_superuser">{{ filter.form.is_superuser.label }}:</label>
+        {{ filter.form.is_superuser }}
+      </div>
+      <div class="col-md-3">
+        <label for="is_active">{{ filter.form.is_active.label }}:</label>
+        {{ filter.form.is_active }}
+      </div>
+      <div class="col-2  d-flex justify-content-center align-items-center mt-4">
+        <button type="submit" class="btn btn-primary fa-brands fa-searchengin fa-2x"></button> &nbsp;&nbsp;&nbsp;
+        <a href="{% url 'administrator:users' %}" class="btn btn-light fa-solid fa-house fa-2x"> </a>
+        </button> 
+      </div>
+    </div>
+  </form>
+</div>
+
+{% if table.rows %}
+
+  {% render_table table %}
+
+{% else %}
+  <div class="text-center my-4" >
+    <h2 class="text-warning"> There no users </h2>
+  </div>
+{% endif %}
+
+{% endblock%}
+
+  </div>
+{% block js %}
+<script>
+(() => {
+    'use strict'
+  
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
+
+
+</script>
+{% endblock%}

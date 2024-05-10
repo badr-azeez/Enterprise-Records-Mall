@@ -1,0 +1,51 @@
+{% extends "home/base.html" %}
+{% block title %} Records{%endblock%}
+
+
+{% block content %}
+
+{% load django_tables2 %}
+
+<div class="mx-auto">
+  <div class="text-center" >
+      <h1 class="text-info" >Records {{user_info.department.name}}</h1>
+      <hr>
+  </div>
+  <a class="btn btn-secondary mb-3" href="{% url 'users:record/add' %}"> Add</a>
+
+  <hr>
+{% if table.rows %}
+
+  {% render_table table %}
+
+{% else %}
+<div class="text-center my-4 text-capitalize" >
+  <h2 class="text-warning"> There are no records </h2>
+</div>
+{% endif %}
+
+{% endblock%}
+
+  </div>
+{% block js %}
+<script>
+(() => {
+    'use strict'
+  
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>
+{% endblock%}

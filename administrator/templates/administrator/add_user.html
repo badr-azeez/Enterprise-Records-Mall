@@ -1,0 +1,62 @@
+{% extends "home/base.html" %}
+{% block title %} Add User {%endblock%}
+
+
+{% block content %}
+
+<div class=" w-25 mx-auto">
+    <div class="mx-auto text-center my-5">
+        <h2>Add User</h2>
+        <hr>
+    </div>
+    <form class="row g-3 needs-validation" novalidate action="" method="POST">
+        {% csrf_token %}
+        {% for field in form%}
+        {% if field.name != "department" %}
+          <div class="col-md-12 position-relative">
+              <label for="validationTooltip03" class="form-label fs-5">{{field.label}}</label>
+              <input type="{{field.name}}" name="{{field.name}}"  class="form-control bg-dark text-white" id="validationTooltip03" required maxlength="{{ field.field.max_length }}" minlength="{{ field.field.min_length }}">
+              <div class="invalid-tooltip">
+                  {{field.help_text}}
+              </div>
+              {% for error in field.errors %} 
+              <div class="alert alert-danger mt-2">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+              {% endfor %}
+          </div>
+        {% else %}
+          <label for="validationTooltip03" class="form-label fs-5 mb-0">{{field.label}}</label>
+          {{field}}      
+        {% endif %}
+        {% endfor %}
+        <div class="col-md-12 text-center">
+            <input class="btn btn-success" type="submit" value="Add">
+        </div>
+    </form>
+</div>
+{% endblock%}
+
+{% block js %}
+<script>
+(() => {
+    'use strict'
+  
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>
+
+{% endblock %}

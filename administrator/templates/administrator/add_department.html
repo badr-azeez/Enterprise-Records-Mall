@@ -1,0 +1,53 @@
+{% extends "home/base.html" %}
+{% block title %} Add Department  {%endblock%}
+
+
+{% block content %}
+
+<div class=" w-25 mx-auto text-capitalize">
+    <div class="mx-auto text-center my-5">
+        <h2>add department</h2>
+        <hr>
+    </div>
+    <form class="row g-3 needs-validation" novalidate action="" method="POST">
+        {% csrf_token %}
+        {% for field in form%}
+        <div class="col-md-12 position-relative">
+            <label for="validationTooltip03" class="form-label fs-5">{{field.label}}</label>
+            <input type="text" name="{{field.name}}" maxlength="100"  class="form-control bg-dark text-white" id="validationTooltip03" required>
+            <div class="invalid-tooltip">
+                {{field.help_text}}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="col-md-12 text-center">
+            <input class="btn btn-success" type="submit" value="Add">
+        </div>
+    </form>
+</div>
+{% endblock%}
+
+{% block js %}
+<script>
+(() => {
+    'use strict'
+  
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>
+
+{% endblock %}

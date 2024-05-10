@@ -1,0 +1,130 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %} User modification{% endblock %}
+
+{% block css %}
+<style>
+    .form-switch.form-switch-lg {
+        margin-bottom: 1.2rem; /* JUST FOR STYLING PURPOSE */
+    }
+      
+    .form-switch.form-switch-lg .form-check-input {
+    height: 28px;
+    width: calc(42px + 0.75rem);
+    border-radius: 4rem;
+    }
+    .form-check-label{
+    padding: 2px 12px;
+    font-size: 20px;
+    }
+    .label-active {
+    color: aquamarine;
+    }
+    .label-deactive {
+    color: salmon;
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+
+<div class="container d-flex align-items-center justify-content-center">
+    <form action="{% url 'administrator:user-edit' user_ins.id %}" class="g-3 needs-validation" novalidate method="POST">
+        {% csrf_token %}
+        <h5 class="text-white fs-5 my-4" >Account ID : <span class="text-info" >{{user_ins.id}}</span> </h5>
+        <h5 class="text-white fs-5 my-4" >Account creation date : <span class="text-info" >{{user_ins.date_joined|date:"Y-m-d  h:i A"}}</span> </h5>
+        <div class="my-2">
+            <label class="text-white fs-5">Account Status : &nbsp;</label>
+            <div class="form-check form-switch form-switch-lg d-inline-block">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="is_active"
+                {% if user_ins.is_active %} checked {% endif %}>
+
+                <label id="switchLabel" class="form-check-label
+                {% if user_ins.is_active %}label-active
+                {% else %} label-deactive
+                {% endif %}" for="flexSwitchCheckDefault">
+                {% if user_ins.is_active %}
+                Account Active
+                {% else %}
+                    Account Disable                
+                {% endif %}
+            </label>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="my-2">
+                    <label class="form-label text-start fs-5">Account Owner</label>
+                    <input type="text" name="first_name" value="{{user_ins.first_name}}" class="form-control bg-dark text-white" minlength="3" maxlength="50" required>
+                    <div class="invalid-tooltip">
+                        It should be between 8 to 100 characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="my-2">
+                    <label class="form-label text-start fs-5">Username</label>
+                    <input type="text" name="username" value="{{user_ins.username}}" class="form-control bg-dark text-white" minlength="3" maxlength="50" required>
+                    <div class="invalid-tooltip">
+                        It should be between 8 to 100 characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="my-2">
+                    <label class="form-label text-start fs-5">New Password</label>
+                    <input type="password" name="password" value="" class="form-control bg-dark text-white"
+                    placeholder="Leave it if you don't want to change it">
+                    <div class="invalid-tooltip">
+                       Field is required
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="my-2 text-capitalize">
+                    <label class="form-label text-start fs-5">Department</label>
+                    <select name="department" class="fs-5 form-select bg-info text-black">
+                        {% for department in departments %}
+                              <option class="fs-5 {% if department.id == 1 %} text-danger {% endif %}" value="{{department.id }}" {% if department.id == user_department.department.id %} selected {% endif %}>{{department.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="my-2 container col-md-12 d-flex align-items-center justify-content-center">
+            <button type="submit" class="btn btn-success">
+                Edit
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<script>
+    const switchInput = document.getElementById('flexSwitchCheckDefault');
+    const switchLabel = document.getElementById('switchLabel');
+
+    switchInput.addEventListener('change', function() {
+        if (this.checked) {
+            switchLabel.textContent = 'Account Active';
+            switchLabel.classList.remove('label-deactive');
+            switchLabel.classList.add('label-active');
+        } else {
+            switchLabel.textContent = 'Account Disable';
+            switchLabel.classList.remove('label-active');
+            switchLabel.classList.add('label-deactive');
+        }
+    });
+</script>
+{% endblock js %}

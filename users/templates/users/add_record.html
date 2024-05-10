@@ -1,0 +1,118 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{%block css%}
+<style>
+  label{
+    font-size: 16px;
+    font-weight: bold;
+  }
+</style>
+{%endblock%}
+{% block title %} Add Record{% endblock %}
+
+{% block content %}
+<div class="text-center my-4">
+  <h2 class="text-success my-4">( {{user_info.department.name}} )</h2>
+</div>
+<form class="g-3 needs-validation my-4" novalidate action=""  enctype="multipart/form-data" autocomplete="off"  method="POST">
+        {% csrf_token %}
+    <div class="row">
+          <div class="col-md-6 my-2">
+              <div class="row">
+                <div class="col-md-2">
+                  <img class="img-fluid w-100 h-100" src="/static/images/products/date.png" height="100" width="100" alt="">
+                </div>
+                <div class="col-md-10">
+                  <label for="field1">{{form.date.label}}:</label>
+                  <input type="date" id="dateInput" name="{{ form.date.name }}" class="form-control bg-white text-black" required placeholder="date" required>
+                </div>
+              </div>
+          </div>
+     {% for field in form%}
+        {% if field.name != 'note'  and field.name != "date"  and field.name != "file" and field.name != "is_validate" %}
+          <div class="col-md-6 my-2">
+            <div class="row">
+              <div class="col-md-2">
+                <img class="img-fluid w-100 h-100" src="/static/images/products/{{field.help_text}}" height="150" width="150" alt="">
+              </div>
+              <div class="col-md-10">
+                <label for="field1">{{field.label}}:</label>
+                <input type="number" name="{{ field.name }}" value="{{field.value}}" class="form-control bg-dark text-white mb-2" min="0" required>
+              </div>
+            </div>
+          </div> 
+        {% endif %}
+     {% endfor %}
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="note">{{form.note.label}}</label>
+        <textarea name="{{form.note.name}}" class="form-control bg-dark text-white" id="{{form.note.name}}" rows="5">{{form.note.value}}</textarea>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-5">
+          <label for="formFile">{{form.file.label}}</label> <br>
+          <input
+            name="{{form.file.name}}"
+            style="border: 1px solid white;"
+            class="form-control-file custom-file-input bg-dark text-white"
+            type="file"
+            onchange="checkFileSize()" 
+            id="fileInput"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title=".pdf,.zip,.rar"
+            accept=".pdf,.zip,.rar" >
+          <br>
+          <label class="text-info" for="formFile">Acceptable file formats zip , rar , pdf</label>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <button type="submit" class="btn btn-success">Add</button>
+    </div>
+</form>
+
+
+{% endblock %}
+{% block js %}
+
+<script>
+
+flatpickr.localize(flatpickr.l10ns.ar);
+flatpickr("#dateInput", {
+  minDate: "2024-01",
+  allowInput: true,
+});
+
+
+
+(() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "home/base.html" %}
+{% block title %} Uploaded Files By Departments{%endblock%}
+
+
+{% block content %}
+
+{% load django_tables2 %}
+
+<div class="mx-auto">
+  <div class="text-center" >
+      <h1>Uploaded Files By Departments</h1>
+  </div>
+
+<hr>
+<form method="get">
+  <div class="row">
+    <div class="col-md-3">
+      <label for="department">{{ filter.form.department.label }}:</label>
+      {{ filter.form.department }}
+    </div>
+    <div class="col-md-3">
+      <label for="user">{{ filter.form.user.label }}:</label>
+      {{ filter.form.user }}
+    </div>
+    <div class="col-md-2">
+      <label for="date">{{ filter.form.date.label }}:</label>
+      {{ filter.form.date }}
+    </div>
+    <div class="col-md-1">
+      <label for="is_validate">{{ filter.form.is_validate.label }}:</label>
+      {{ filter.form.is_validate }}
+    </div>
+    <div class="col-md-3">
+      <label for="note">{{ filter.form.note.label }}:</label>
+      <input type="text" name="{{ filter.form.note.html_name }}" class="form-control bg-dark text-white custom-height">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center align-items-center p-2">
+      <button type="submit" class="btn btn-primary fa-brands fa-searchengin fa-2x"></button> &nbsp;&nbsp;&nbsp;
+      <a href="{% url 'administrator:file-uploaded' %}" class="btn btn-light fa-solid fa-house fa-2x"> </a>
+      </button> 
+    </div>
+  </div>
+</form>
+
+
+
+{% if table.rows %}
+
+  {% render_table table %}
+
+{% else %}
+<div class="text-center my-4" >
+  <h2 class="text-warning"> There are no files </h2>
+</div>
+{% endif %}
+
+{% endblock%}
+
+  </div>
+{% block js %}
+<script>
+  flatpickr.localize(flatpickr.l10ns.ar);
+  flatpickr("#dateInput", {
+    minDate: "2024-01",
+    allowInput: true,
+    dateFormat: "Y-m-d",
+    defaultDate:'null'
+  });
+</script>
+{% endblock%}

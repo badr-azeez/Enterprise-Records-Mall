@@ -1,0 +1,254 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Control Panel{% endblock %}
+
+{% block css %}
+<style>
+    .circle {
+        background: red;
+        border-radius: 200px;
+        color: white;
+        height: 34px;
+        font-weight: bold;
+        width: 33px;
+        display: table;
+    }
+    .circle p {
+        vertical-align: middle;
+        display: table-cell;
+    }
+</style>
+{% endblock css %}
+{% block content %}
+
+<div class="row mt-5 my-auto text-center text-capitalize">
+    <div class="col-md-4">
+      <ol class="list-group dark-cyan h-100 list-group-numbered text-white border border-white">
+
+          <h5 class=" m-4">Total Records for departments</h5>
+
+          <li class="dark-cyan my-2 p-2 border-bottom d-flex justify-content-between align-items-start text-white">
+              <div class="ms-2 me-auto">
+                  <div class="fw-bold mt-1">Total records for year ({{year}}) </div>
+              </div>
+              <span class="badge text-bg-light text-black p-2 fs-6 circle" >{{total_departments_year_sum}}</span>
+          </li>
+          <li class="dark-cyan my-2 p-2 border-bottom d-flex justify-content-between align-items-start text-white">
+              <div class="ms-2 me-auto">
+                  <div class="fw-bold mt-1">Total records for month ({{month}}) </div>
+              </div>
+              <span class="badge text-bg-light text-black p-2 fs-6  circle" >{{total_departments_month_sum}}</span>
+          </li>
+          <li class="dark-cyan my-2 p-2 border-bottom d-flex justify-content-between align-items-start text-white">
+              <div class="ms-2 me-auto">
+                  <div class="fw-bold mt-1">Total records for last 7 days </div>
+              </div>
+              <span class="badge text-bg-light text-black p-2 fs-6  circle" >{{total_departments_7days_sum}}</span>
+          </li>
+          <li class="dark-cyan my-2 px-2 d-flex justify-content-between align-items-start text-white">
+              <div class="ms-2 me-auto">
+                  <div class="fw-bold mt-1">Unverified input</div>
+                </div>
+                <a class="link"  href="{% url 'administrator:records/departments' %}?is_validate=False">
+                    <span class="badge text-bg-warning text-black p-2 fs-6  circle" >{{records_not_validate_yet}}</span>
+                </a>
+          </li>
+      </ol>
+    </div>
+    <div class="col-md-4">
+      <ol class="dark-cyan h-100 list-group list-group-numbered text-white border border-white">
+          <h5 class=" m-4">Record user logins</h5>
+          {% for department_nam,value in login_details.items %}
+              <li class="dark-cyan p-2 border-bottom d-flex justify-content-between align-items-start text-white mb-3">
+              <div class="ms-2 me-auto">
+                  <div class="fw-bold">{{department_nam.first_name}} </div>
+              </div>
+              <span >{{value}}</span>
+          </li>
+          {%endfor%}
+      </ol>
+      
+    </div>
+    <div class="col-md-4">
+      <ol class="dark-cyan h-100 list-group list-group-numbered text-white border border-white">
+          <h5 class=" m-4" >File Uploaded Month ({{month}})</h5>
+          {% for department_nam,value in uploadFile.items %}
+              <li class="dark-cyan p-2 border-bottom d-flex justify-content-between align-items-start text-white mb-3">
+                  <div class="ms-2 me-auto">
+                      <div class="fw-bold">{{ department_nam }}</div>
+                  </div>
+                  {% if value == 'True' %}
+                      <span style="margin-left: 15px;" class="badge text-success border border-success roundeed  p-2 fs-6">Verified</span>
+                  {% elif value == 'False' %}
+                      <span class="badge text-warning  border border-warning roundeed  p-2 fs-6">Not verified</span>
+                  {% elif value == 'NotSet' %}
+                      <span style="margin-left: 36px;" class="badge text-danger  border border-danger roundeed  p-2 fs-6">None</span>
+                  {% endif %}
+              </li>
+              {% endfor %}
+      </ol>
+    </div>
+  </div>
+<br>
+<div class="row">
+  <div class="col">
+    <div id="container_2"></div>
+         
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/highcharts.js' %}"></script>
+<script src="{% static 'js/exporting.js' %}"></script>
+<script src="{% static 'js/export-data.js' %}"></script>
+<script src="{% static 'js/accessibility.js' %}"></script>
+
+<script>
+
+
+/* container 1 */
+function create_total_chars(){
+    var year_month_7days = {{ year_month_7days|safe }};
+    
+    var categories = [];
+    var seriesData = [];
+    
+    for (var department in year_month_7days) {
+        if (year_month_7days.hasOwnProperty(department)) {
+            categories.push(department);
+            var departmentData = year_month_7days[department];
+            var departmentValues = [departmentData.y, departmentData.m, departmentData.days_7];
+            seriesData.push(departmentValues);
+        }
+    }
+
+    Highcharts.chart('container_2', {
+        
+      chart: {
+          type: 'bar',
+          height: 500, 
+          backgroundColor: '#264653',
+          spacingBottom: 15,
+          spacingTop: 10,
+          spacingLeft: 10,
+          spacingRight: 10,
+          style: {
+              border: '1px solid white' 
+          }
+      },
+      title: {
+          text: 'Statistics of Departments Records',
+          align: 'center',
+          style: {
+            color: '#ffffff',
+            fontSize: '25px',
+            fontFamily: 'Arial, sans-serif', 
+            fontWeight: 'bold',
+            color: 'white',
+            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)', 
+            padding: '40px',
+            borderRadius: '10px', 
+          }
+      },
+      subtitle: {
+        text: ``,
+        align: 'center',
+        style: {
+          fontSize: '16px',
+          fontFamily: 'Arial, sans-serif', 
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)', 
+          padding: '40px',
+          borderRadius: '10px', 
+        }
+      },
+      xAxis: {
+          categories: categories,
+          title: {
+              text: "Departments"
+          },
+          gridLineWidth: 1,
+          lineWidth: 0,
+          labels: {
+              style: {
+                  color: 'white',  
+              }
+          }
+      },
+      yAxis: {
+          min: 0, 
+          allowDecimals: false,
+          title: {
+              text: '',
+              align: 'high'
+          },
+          labels: {
+              overflow: 'justify',
+              style: {
+                  color: 'white'  
+              }
+          },
+          gridLineWidth: 0,
+      },
+      tooltip: {
+          valueSuffix: '',
+          style: {
+              fontSize: '16px'
+          }
+      },
+      plotOptions: {
+          bar: {
+              borderRadius: '50%',
+              borderWidth: 2,
+              dataLabels: {
+                  enabled: true,
+                  distance: 15,
+                  style: {
+                      fontSize: '18px',
+                      color: 'white',
+                  }
+              },
+              groupPadding: 0.1,
+              pointPadding: 0.2,
+              pointWidth: 10, 
+              pointRange: 1
+          }
+      },
+      legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'top',
+          x: -40,
+          y: 80,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+              Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+          shadow: true
+      },
+      credits: {
+          enabled: false
+      },
+      series: [{
+          name: 'Year {{year}}',
+          data: seriesData.map(data => data[0])
+      }, {
+          name: 'Month {{month}}',
+          data: seriesData.map(data => data[1])
+      }, {
+          name: 'Last 7 days',
+          data: seriesData.map(data => data[2])
+      }]
+  });
+  
+}
+create_total_chars()
+
+/* end container 1 */
+
+</script>
+{% endblock js %}

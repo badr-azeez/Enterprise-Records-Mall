@@ -1,0 +1,55 @@
+{% extends "home/base.html" %}
+{% block title %}
+About
+{% endblock title %}
+{% block css %}
+<style>
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      -webkit-box-shadow: 9px 7px 21px -8px rgba(191,191,191,0.71);
+      -moz-box-shadow: 9px 7px 21px -8px rgba(191,191,191,0.71);
+      box-shadow: 9px 7px 21px -8px rgba(191,191,191,0.71);
+      text-align: center;
+    }
+    
+    h1 {
+      color: #fff;
+    }
+    
+    p {
+      color: #ccc;
+      margin-bottom: 20px;
+      font-size:20px;
+    }
+    
+    
+    .created-by {
+      color: #aaa;
+    }
+    
+</style>
+{% endblock css %}
+
+{% block content %}
+
+  <h1>ERM</h1>
+  <p class="text-capitalize">
+    The <span class="text text-info" >Enterprise Records Mall</span> project was developed to manage records and data for <span class="text-bold text-info">companies</span> and <span class="text-bold text-info">institutions</span>. The system allows the administrator to create departments and assign users to each department, where each user is assigned to a specific department. When they sign in, the user is shown the name of their department and can add sales records and generate monthly reports.
+  </p>
+  
+  <br>
+  <p class="created-by">Created by <b>Badr Azeez</b></p>
+  <a target="_blank" class="btn btn-lg btn-light" href="https://www.facebook.com/0xbadr.azeez/"><i class="fa-brands fa-facebook fa-xl"></i></a>
+  <a target="_blank" class="btn btn-lg btn-light" href="https://www.linkedin.com/in/badrazeez/"><i class="fa-brands fa-linkedin fa-xl"></i></a>
+   <a target="_blank" class="btn btn-lg btn-light" href="https://twitter.com/linux_2014"><i class="fa-brands fa-x-twitter fa-xl"></i></a>
+   <a target="_blank" class="btn btn-lg btn-light" href="https://github.com/badr-azeez"> <i class="fa-brands fa-github fa-xl"></i> </a>
+
+{% endblock content %}
+
+
+
+

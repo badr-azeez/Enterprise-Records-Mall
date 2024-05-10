@@ -1,0 +1,49 @@
+
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Log in{% endblock %}
+
+{% block css %}
+    <link href="{% static 'css/login-form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<div class="department">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="department pb-5 pt-5 pt-sm-2 text-center">
+			          	<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <div class="card-front">
+                                        <div class="center-wrap">
+                                            <div class="department text-center">
+                                                <h4 class="mb-4 pb-3">Log in</h4>
+                                                <div class="form-group">
+                                                    <input type="text" name="username" class="form-style" placeholder="Username" id="username" autocomplete="off" required minlength="3" oninvalid="this.setCustomValidity('Must be between 3 to 50 English characters')" oninput="setCustomValidity('')">
+                                                    <i class="input-icon fa fa-user"  ></i>
+                                                </div>	
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="password" class="form-style" placeholder="Password" id="password" autocomplete="off" required oninvalid="this.setCustomValidity('Must be 8 characters or more')" oninput="setCustomValidity('')" minlength="8">
+                                                    <i class="input-icon fa-solid fa-key" ></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input  value="Log in" type="submit" class="btn mt-4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+			      			</div>
+			      		</div>
+			      	</div>
+		      	</div>
+	      	</div>
+	    </div>
+	</div>
+{% endblock %}
+

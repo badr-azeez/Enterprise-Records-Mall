@@ -1,0 +1,147 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white text-capitalize">
+    <div class="container-fluid">
+      <a title="Enterprise Records Mall" class="navbar-brand" href="{% url 'home:home' %}">ERM</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% with request.resolver_match.url_name as url_name %}
+
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link fw-bold {% if url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home:home' %}">
+                  <i class="fas fa-home"></i> &nbsp;
+                  Home
+              </a>
+            </li>
+            {% comment %} super user {% endcomment %}
+
+            {% if user.is_superuser %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-bold {% if url_name == 'departments/add' or url_name == "departments" %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-chart-line"></i> &nbsp;
+                departments
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'administrator:departments' %}">
+                    <i class="fa-solid fa-eye"></i> &nbsp;
+                   Show departments
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'administrator:departments/add' %}">
+                    <i class="fa-solid fa-plus"></i> &nbsp;
+                   Add departments
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle fw-bold {% if url_name == 'users/add' or url_name == "users" %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-users"></i> &nbsp;
+                  Users
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'administrator:users' %}">
+                        <i class="fa-solid fa-eye"></i>&nbsp;
+                    Show Users
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'administrator:users/add' %}">
+                      <i class="fa-solid fa-user-plus"></i>&nbsp;
+                      Add Users
+                    </a>
+                  </li>
+                </ul>
+            </li>
+
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-bold {% if  url_name == "records/departments" or url_name == "records/extracts" %} active {% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-chart-line"></i> &nbsp;
+                Records
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'administrator:records/departments' %}">
+                      <i class="fa-solid fa-eye"></i> &nbsp;
+                      Show Records
+                  </a>
+                </li>
+                
+                <li>
+                  <a class="dropdown-item" href="{% url 'administrator:records/extracts' %}">
+                    <i class="fa-solid fa-file-export"></i> &nbsp;
+                      Export Records
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link fw-bold {% if url_name == 'file-uploaded' %}active{% endif %}" aria-current="page" href="{% url 'administrator:file-uploaded' %}">
+                <i class="fa-solid fa-eye"></i>&nbsp;
+                File Upload 
+              </a>
+            </li>
+            {%else%}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle fw-bold {% if url_name == 'records' or url_name == "record/add" %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-chart-line"></i> &nbsp;
+                  Records
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'users:records' %}">
+                        <i class="fa-solid fa-eye"></i> &nbsp;
+                        Show Records
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'users:record/add' %}">
+                        <i class="fa-solid fa-plus"></i> &nbsp;
+                        Add Records
+                    </a>
+                </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-bold {% if url_name == 'upload-file' %}active{% endif %}" aria-current="page" href="{% url 'users:upload-file' %}">
+                <i class="fa-solid fa-plus"></i>&nbsp;
+                File Upload 
+              </a>
+            </li>
+            {% endif %}
+            {% comment %} end  super user {% endcomment %}
+            <li class="nav-item">
+              <a class="nav-link fw-bold {% if url_name == 'about' %}active{% endif %}" aria-current="page" href="{% url 'home:about' %}">
+                <i class="fa-solid fa-circle-info"></i>&nbsp;
+                  About
+              </a>
+            </li>
+          </ul>
+          {% endwith %}
+        <div class="text-end">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a id="logout-link" class="nav-link btn btn-danger" href="#" title="Sign out">
+                <span style="font-family: 'Arial', sans-serif; font-size: 1.2em; color: #ffffff;">{{user.first_name}}</span>
+                <span style="margin-left: 0.5em;"><i class="fa-solid fa-person-walking-arrow-right fa-lg text-white"></i></span>
+              </a>
+              <form id="logout-form" method="POST" action="{% url 'home:logout' %}">
+                {% csrf_token %}
+              </form>
+              <script>
+                document.getElementById('logout-link').addEventListener('click', function(e) {
+                  e.preventDefault();
+                  document.getElementById('logout-form').submit();
+                });
+              </script>
+            </li>
+          </ul>
+        </div>
+    </div>
+  </nav>
