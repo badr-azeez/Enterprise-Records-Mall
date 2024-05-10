@@ -37,6 +37,6 @@ python manage.py createadmin
 After installing the necessary dependencies, you can run the Enterprise Records Mall server:
 
 ```bash
-python manager.py runserver
+python manage.py runserver
 ```
 
