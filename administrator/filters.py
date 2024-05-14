@@ -4,8 +4,8 @@ from users.models import Records ,uploadFile
 from django import forms
 from django.contrib.auth.models import User
 
+users_list = []
 try:
-    users_list = []
     for user in User.objects.exclude(id=1).all():
         users_list.append((user.id,user.first_name))
 except:
