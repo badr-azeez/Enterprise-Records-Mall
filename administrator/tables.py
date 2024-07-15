@@ -18,8 +18,8 @@ class SuperuserIconColumn(Column):
 
 class ActiveIconColumn(Column):
     def render(self, record):
-        is_superuser = record.is_active
-        if is_superuser:
+        is_active = record.is_active
+        if is_active:
             return mark_safe('<div class="text-center"><i class="fa-solid fa-check fa-lg" style="color: #63E6BE;"></i></div>')
         else:
             return mark_safe('<div class="text-center"><i class="fa-solid fa-xmark fa-lg" style="color:  #ea538f;"></i></div>')
